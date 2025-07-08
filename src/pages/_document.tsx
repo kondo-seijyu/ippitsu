@@ -8,10 +8,10 @@ export default function Document() {
         <link rel="icon" href="/favicon.ico" />
         <meta property="og:title" content="IPPITSU — あなたの思考を、一筆で。" />
         <meta property="og:description" content="バグは近くで見ると悲劇だが、遠くから見れば喜劇である——。失敗もコンテンツにする、新たな供養の試み。" />
-        <meta property="og:image" content="#" />
+        <meta property="og:image" content="https://ippitsu.vercel.app/ogp.jpg" />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="#" />
-        <meta name="twitter:card" content="#" />
+        <meta property="og:url" content="https://ippitsu.vercel.app/" />
+        <meta name="twitter:card" content="https://ippitsu.vercel.app/ogp.jpg" />
       </Head>
       <body>
         <Main />
