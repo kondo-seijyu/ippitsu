@@ -16,7 +16,7 @@ export default function Header() {
         />
 
         <motion.p
-          className="text-gray-500 text-xs md:text-sm"
+          className="text-gray-600 text-sm md:text-base"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6 }}
@@ -25,7 +25,7 @@ export default function Header() {
         </motion.p>
 
         <motion.p
-          className="text-gray-400 text-[11px] md:text-xs max-w-[90%] md:max-w-md mx-auto leading-relaxed"
+          className="text-gray-500 text-sm md:text-base max-w-[90%] md:max-w-md mx-auto leading-relaxed"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
