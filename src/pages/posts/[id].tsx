@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   const paths = posts.map((post) => ({
     params: {
-      id: formatUUID(post.id), // ← ここがポイント
+      id: post.id.replace(/-/g, ''), // URLではハイフン無しIDを使う
     },
   }))
 
@@ -44,7 +44,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
 }
 
 export const getStaticProps: GetStaticProps<Props> = async (context) => {
-  const pageId = context.params?.id as string
+  const rawId = context.params?.id as string
+  const pageId = formatUUID(rawId) // ← 🔧ここでハイフン付きに整形
   const recordMap = await getNotionPage(pageId)
 
   return {
