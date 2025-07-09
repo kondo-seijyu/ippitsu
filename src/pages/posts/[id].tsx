@@ -8,6 +8,11 @@ interface Props {
   recordMap: ExtendedRecordMap
 }
 
+// 🔧 UUIDをハイフン付き形式に整える関数
+function formatUUID(id: string) {
+  return `${id.substring(0, 8)}-${id.substring(8, 12)}-${id.substring(12, 16)}-${id.substring(16, 20)}-${id.substring(20)}`
+}
+
 export default function Post({ recordMap }: Props) {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
@@ -24,10 +29,12 @@ export default function Post({ recordMap }: Props) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const pageId = process.env.NOTION_PAGE_ID as string
   const recordMap = await getNotionPage(pageId)
-  const posts = getChildPages(recordMap) // ✅ 修正：getPostsFromTable → getChildPages
+  const posts = getChildPages(recordMap)
 
   const paths = posts.map((post) => ({
-    params: { id: post.id },
+    params: {
+      id: formatUUID(post.id), // ← ここがポイント
+    },
   }))
 
   return {
@@ -46,4 +53,4 @@ export const getStaticProps: GetStaticProps<Props> = async (context) => {
     },
     revalidate: 60,
   }
-} 
+}
