@@ -3,6 +3,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme')
 module.exports = {
   content: [
     './src/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/react-notion-x/**/*.{js,ts,jsx,tsx}', // ← 追加
   ],
   theme: {
     extend: {
@@ -19,5 +20,6 @@ module.exports = {
   },
   plugins: [
     require('@tailwindcss/line-clamp'),
+    require('@tailwindcss/typography'), // ← 追加
   ],
 }
