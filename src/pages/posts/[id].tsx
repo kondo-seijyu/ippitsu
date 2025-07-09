@@ -11,9 +11,12 @@ function normalizeId(id: string): string {
   return id.includes('-') ? id : formatUUID(id)
 }
 
-interface Props { recordMap: ExtendedRecordMap }
+interface Props {
+  recordMap: ExtendedRecordMap
+  nextPostId: string | null
+}
 
-export default function Post({ recordMap }: Props) {
+export default function Post({ recordMap, nextPostId }: Props) {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <div className="mb-6">
@@ -22,6 +25,16 @@ export default function Post({ recordMap }: Props) {
       <div className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl max-w-none">
         <NotionRenderer recordMap={recordMap} fullPage={false} darkMode={false} />
       </div>
+      {nextPostId && (
+        <div className="mt-10 text-right">
+          <a
+            href={`/posts/${nextPostId}`}
+            className="inline-block text-blue-600 hover:underline font-semibold"
+          >
+            次の記事へ →
+          </a>
+        </div>
+      )}
     </main>
   )
 }
@@ -30,8 +43,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
   const pageId = process.env.NOTION_PAGE_ID as string
   const recordMap = await getNotionPage(pageId)
   const posts = getChildPages(recordMap)
-
-  console.log('生成対象IDs:', posts.map(p => p.id)) // debug用
 
   const paths = posts.map((post) => ({
     params: { id: normalizeId(post.id) },
@@ -44,5 +55,12 @@ export const getStaticProps: GetStaticProps<Props> = async (ctx) => {
   if (!ctx.params?.id) throw new Error('no id')
   const pageId = normalizeId(ctx.params.id as string)
   const recordMap = await getNotionPage(pageId)
-  return { props: { recordMap }, revalidate: 60 }
+
+  const rootPageId = process.env.NOTION_PAGE_ID as string
+  const allPosts = getChildPages(await getNotionPage(rootPageId))
+  const ids = allPosts.map(p => normalizeId(p.id))
+  const currentIndex = ids.indexOf(pageId)
+  const nextPostId = ids[currentIndex + 1] ?? null
+
+  return { props: { recordMap, nextPostId }, revalidate: 60 }
 }
